@@ -9,27 +9,38 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Main {
-    Map<String, Object> cache = new HashMap<>();
+    static Map<String, Object> cache = new HashMap<>();
 
     public static void main(String[] args) {
-        // Java Lambda
+        basicLambda();
+        capture();
+        refinalize();
+        anonymousClassAndLamdba();
+        creatingLambda();
+        callingLambda();
+        methodReference();
+        constructorReference();
+        caching();
+    }
+
+    static void basicLambda() {
         Function<Integer, Integer> quadratic = value -> value * value;
         Function<Integer, Integer> quadraticWithBlock = value -> {
             return value * value;
         };
     }
 
-    void capture() {
+    static void capture() {
         var theAnswer = 42;
         Runnable printAnswer = () -> System.out.println("the answer is " + theAnswer);
         run(printAnswer);
     }
 
-    void run(Runnable r) {
+    static void run(Runnable r) {
         r.run();
     }
 
-    void refinalize() {
+    static void refinalize() {
         // 이때는 effectively final
         var nonEffectivelyFinal = 1_000L;
         // 변수를 변경하였기 때문에 더이상 effectivelt final 이 아님
@@ -39,7 +50,7 @@ public class Main {
         Predicate<Long> isOver9000 = input -> input > finalAgain;
     }
 
-    void anonymousClassAndLamdba() {
+    static void anonymousClassAndLamdba() {
         var helloWorld = new HelloWorld() {
             @Override
             public String sayHello(String name) {
@@ -50,16 +61,16 @@ public class Main {
         HelloWorld helloWorldLamdba = name -> "hello, " + name + "|";
     }
 
-    void creatingLambda() {
+    static void creatingLambda() {
         Predicate<String> isNull = value -> value == null;
     }
 
-    void callingLambda() {
+    static void callingLambda() {
         Function<String, String> helloWorld = name -> "hello, " + name + "|";
         var result = helloWorld.apply("Ben");
     }
 
-    void methodReference() {
+    static void methodReference() {
         new SubClass().superAndThis("hello, World!");
 
         Function<String, String> toLowerCaseLamdba = str -> str.toLowerCase();
@@ -67,26 +78,26 @@ public class Main {
     }
 
     @SuppressWarnings("deprecation")
-    void constructorReference() {
+    static void constructorReference() {
         Function<String, Locale> newLocaleLamdba = language -> new Locale(language);
         Function<String, Locale> newLocaleRef = Locale::new;
     }
 
     @SuppressWarnings("unchecked")
-    <T> T memoize(String identifier, Supplier<T> fn) {
+    static <T> T memoize(String identifier, Supplier<T> fn) {
         return (T) cache.computeIfAbsent(identifier, key -> fn.get());
     }
 
-    Integer expensiveCall(String arg, int arg1) {
+    static Integer expensiveCall(String arg, int arg1) {
         return arg1;
     }
 
-    Integer memoizedCall(String arg, int arg1) {
+    static Integer memoizedCall(String arg, int arg1) {
         var compoundKey = String.format("expensiveCall:%s-%d", arg, arg1);
         return memoize(compoundKey, () -> expensiveCall(arg, arg1));
     }
 
-    void caching() {
+    static void caching() {
         var calculated = memoizedCall("hello, world!", 42);
         var cached = memoizedCall("hello, world!", 42);
     }

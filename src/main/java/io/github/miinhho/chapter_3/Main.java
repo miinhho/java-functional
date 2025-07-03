@@ -8,6 +8,12 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public class Main {
     public static void main(String[] args) {
+        functionalInterface();
+        functionalComposition();
+        functionalCompositor();
+    }
+
+    static void functionalInterface() {
         Function<String, Integer> stringLength = str -> str != null ? str.length() : 0;
         Integer funtionResult = stringLength.apply("Hello, Function!");
 
@@ -21,7 +27,7 @@ public class Main {
         boolean predicateResult = over9000.test(12_345);
     }
 
-    void functionalComposition() {
+    static void functionalComposition() {
         Function<String, String> removeLowerCaseA = str -> str.replace("a", "");
         Function<String, String> upperCase = String::toUpperCase;
 
@@ -34,7 +40,7 @@ public class Main {
                 .apply(input);
     }
 
-    void functionalCompositor() {
+    static void functionalCompositor() {
         Function<String, String> removeLowerCaseA = str -> str.replace("a", "");
         Function<String, String> upperCase = String::toUpperCase;
 
