@@ -33,4 +33,14 @@ public class Main {
         upperCase.compose(removeLowerCaseA)
                 .apply(input);
     }
+
+    void functionalCompositor() {
+        Function<String, String> removeLowerCaseA = str -> str.replace("a", "");
+        Function<String, String> upperCase = String::toUpperCase;
+
+        Function<String, String> stringOperations = removeLowerCaseA.andThen(upperCase);
+
+        Consumer<String> task = Compositor.compose(stringOperations, System.out::println);
+        task.accept("abcd");
+    }
 }
